@@ -1,0 +1,1 @@
+{"fips": "float64", "admin2": "str", "province_state": "str", "country_region": "str", "last_update": "datetime64[ns]", "lat": "float64", "long_": "float64", "confirmed": "int64", "deaths": "int64", "recovered": "int64", "active": "int64", "combined_key": "str", "incident_rate": "float64", "case_fatality_ratio": "float64"}

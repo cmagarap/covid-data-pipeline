@@ -1,0 +1,1 @@
+{"Province_State": "str", "Country_Region": "str", "Last_Update": "datetime64[ns]", "Confirmed": "Int64", "Deaths": "Int64", "Recovered": "Int64"}
