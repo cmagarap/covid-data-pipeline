@@ -91,7 +91,7 @@ widgets:
   language: python
   name: unique values for api_load_data
   retry_config: null
-  status: executed
+  status: failed
   timeout: null
   type: chart
   upstream_blocks:
