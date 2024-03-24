@@ -1,4 +1,5 @@
 import logging
+import pandas as pd
 from datetime import datetime, timedelta
 
 if 'transformer' not in globals():
@@ -53,12 +54,6 @@ def transform(data, *args, **kwargs):
         Anything (e.g. data frame, dictionary, array, int, str, etc.)
     """
     if len(data) > 0:
-        # last_update = kwargs.get('execution_date')
-        # last_update = datetime.strptime('2020-01-22', '%Y-%m-%d')
-        # last_update += timedelta(days=1)
-        # last_update_str = last_update.strftime('%Y-%m-%d')
-        # print(last_update_str)
-
         # Rename columns using COLUMN_MAPPING
         data = data.rename(columns=COLUMN_MAPPING)
 
@@ -66,14 +61,32 @@ def transform(data, *args, **kwargs):
         missing_columns = {col: None for col in MISSING_COLUMNS if col not in data.columns}
         data = data.assign(**missing_columns)
 
+        data_types = {
+            'FIPS': 'float64',
+            'Admin2': str,
+            'Province_State': str,
+            'Country_Region': str,
+            'Lat': 'float64',
+            'Long_': 'float64',
+            'Confirmed': 'float64',
+            'Deaths': 'float64',
+            'Recovered': 'float64',
+            'Active': 'float64',
+            'Combined_Key': str,
+            'Incident_Rate': 'float64',
+            'Case_Fatality_Ratio': 'float64'
+        }
+
+        data.replace('', pd.NA, inplace=True)  # Convert empty string to NaN
+
+        # Convert column data types
+        data = data.astype(data_types, errors='ignore')
+
         # Remove duplicate rows
         data = data.drop_duplicates()
 
-        # data['Last_Update'] = data['Last_Update'].astype(str)
-        # Only get the last_update for the [current date]
-        # data = data[data['Last_Update'].str.split(' ').str[0] == last_update_str]
-
         logging.info('Data successfully transformed.')
+        # print(data.dtypes)
 
         return data
     

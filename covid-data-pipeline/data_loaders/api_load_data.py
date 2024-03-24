@@ -14,6 +14,7 @@ if 'test' not in globals():
 logging.basicConfig(level=logging.INFO)
 LAST_UPDATE = 'Last_Update'
 
+
 def read_csv_headers(csv_content):
     """
     Reads headers from a CSV content.
@@ -48,7 +49,8 @@ def load_data_from_api(*args, **kwargs):
     - None.
     """
     exec_date = kwargs.get('execution_date').strftime('%m-%d-%Y')
-    # exec_date = '03-22-2021'
+    # exec_date = '06-22-2020'
+    # exec_date = '08-31-2022'
     print('execution_date -->', exec_date)
     url = f'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{exec_date}.csv'
     response = requests.get(url)
@@ -65,34 +67,10 @@ def load_data_from_api(*args, **kwargs):
         csv_headers = read_csv_headers(response.text)
         parse_dates = [LAST_UPDATE] if LAST_UPDATE in csv_headers else ['Last Update']
         
-        # Define data types and column mapping
-        data_types = {
-            'FIPS': pd.UInt32Dtype(),
-            'Admin2': str,
-            'Province_State': str,
-            'Country_Region': str,
-            'Lat': float,
-            'Long_': float,
-            'Confirmed': pd.Int64Dtype(),
-            'Deaths': pd.Int64Dtype(),
-            'Recovered': pd.Int64Dtype(),
-            'Active': pd.Int64Dtype(),
-            'Combined_Key': str,
-            'Incident_Rate': 'float64',
-            'Case_Fatality_Ratio': 'float64'
-        }
-        
         # Read the CSV content from the response text 
         df = pd.read_csv(StringIO(response.text), sep=',',
-            dtype=data_types, parse_dates=parse_dates,
-            na_values=[''], keep_default_na=False)
-
-        # # Rename columns using COLUMN_MAPPING
-        # df.rename(columns=COLUMN_MAPPING, inplace=True)
-
-        # # Check for missing columns and add them with None values
-        # missing_columns = {col: None for col in MISSING_COLUMNS if col not in df.columns}
-        # df = df.assign(**missing_columns)
+            parse_dates=parse_dates,
+            na_values=[''])
 
         return df
 
