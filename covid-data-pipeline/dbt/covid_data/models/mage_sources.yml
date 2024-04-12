@@ -1,0 +1,24 @@
+sources:
+- name: covid
+  tables:
+  - name: daily_report
+- description: Dataframes Mage upstream blocks
+  loader: mage
+  name: mage_covid_data
+  schema: analytics
+  tables:
+  - description: Dataframe for block `export_raw` of the `etl_dbt_covid_pipeline`
+      mage pipeline.
+    identifier: mage_etl_dbt_covid_pipeline_export_raw
+    meta:
+      block_uuid: export_raw
+      pipeline_uuid: etl_dbt_covid_pipeline
+    name: etl_dbt_covid_pipeline_export_raw
+  - description: Dataframe for block `export_daily_reports` of the `etl_dbt_pipeline`
+      mage pipeline.
+    identifier: mage_etl_dbt_pipeline_export_daily_reports
+    meta:
+      block_uuid: export_daily_reports
+      pipeline_uuid: etl_dbt_pipeline
+    name: etl_dbt_pipeline_export_daily_reports
+version: 2

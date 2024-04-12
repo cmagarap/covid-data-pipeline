@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: daily_report
+    columns:
+      - name: FIPS
+        description: "Floating point identifier"
+      - name: Admin2
+        description: "Administrative district"
+      - name: Province_State
+        description: "State or province"
+      - name: Country_Region
+        description: "Country or region"
+      - name: Lat
+        description: "Latitude"
+      - name: Long_
+        description: "Longitude"
+      - name: Confirmed
+        description: "Number of confirmed cases"
+      - name: Deaths
+        description: "Number of deaths"
+      - name: Recovered
+        description: "Number of recovered cases"
+      - name: Active
+        description: "Number of active cases"
+      - name: Combined_Key
+        description: "Combined location identifier"
+      - name: Incident_Rate
+        description: "Incident rate"
+      - name: Case_Fatality_Ratio
+        description: "Ratio of deaths to confirmed cases"
