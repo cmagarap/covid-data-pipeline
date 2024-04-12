@@ -1,14 +1,12 @@
 # COVID Data Pipeline
 
 This repository contains an end-to-end data pipeline for processing Johns Hopkins University COVID-19 dataset. This pipeline has a backfill for the date range of January 2020 to March 2023.
-It consists of three main components: data loader, transformer, and data exporter. 
+It consists of four main components: data loader, data exporter, and two dbt blocks. 
 
-The data loader block extracts CSV data from the GitHub repository, while the transformer handles tasks such as managing missing values,
+The data loader block extracts CSV data from the GitHub repository, and handles missing values,
 addressing inconsistent columns, dropping duplicate rows, and resolving data type conflicts.
-Finally, the data exporter inserts the processed data into a Postgres table.
+The data exporter inserts the processed data into a Postgres table, then the dbt block performs a query for Daily Country Cases report, then rebuilds all model using dbt run --full-refresh.
 
-Initially, I attempted to utilize dbt with Mage, but encountered difficulties configuring it. As a result, I opted to utilize Python blocks within
-Mage to avoid wasting time. This project presented a challenge for me as I needed to quickly familiarize myself with the Mage platform due to my lack of prior experience with it.
 
 ## Built with
 
@@ -16,8 +14,9 @@ Mage to avoid wasting time. This project presented a challenge for me as I neede
 2. Mage.ai
 3. Python
 4. PostgreSQL
+5. DBT
 
-
+![Data Pipeline Architecture](https://raw.githubusercontent.com/cmagarap/covid-data-pipeline/main/figures/COVID19-data-pipeline-dbt.png)
 
 ## Folder Structure
 ```
@@ -27,7 +26,7 @@ Mage to avoid wasting time. This project presented a challenge for me as I neede
 │   │   └── export_to_postgres.py
 │   ├── data_loaders
 │   │   └── api_load_data.py
-│   ├── ...
+│   ├── dbt
 │   ├── transformers
 │   │   └── transform_data.py
 │   ├── ...
@@ -80,6 +79,8 @@ docker-compose up
 - Adjust any configuration settings as needed based on your environment.
 - For further assistance or troubleshooting, refer to the documentation or open an issue in the repository.
 
+## Daily Country Cases report
+![Daily Country Cases Sample Data](https://raw.githubusercontent.com/cmagarap/covid-data-pipeline/main/figures/daily_country_cases_sample.png)
 
 # Data Analysis
 1. What are the top 5 most common values in a particular column, and what is their frequency?
@@ -96,7 +97,7 @@ For country/region, the top 5 most common values are:
 | India           |     37195 |
 +-----------------+-----------+
 SELECT country_region, COUNT(*) AS frequency
-FROM covid.daily_reports
+FROM covid.daily_report
 GROUP BY country_region
 ORDER BY frequency DESC
 LIMIT 5;
@@ -104,7 +105,7 @@ LIMIT 5;
 To find out other common values in a column, we can just change the `country_region` to other columns, for example:
 ```
 SELECT province_state, COUNT(*) AS frequency
-FROM covid.daily_reports
+FROM covid.daily_report
 GROUP BY province_state
 ORDER BY frequency DESC
 LIMIT 5;
